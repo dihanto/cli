@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/dihanto/cobra/cmd"
-	"github.com/dihanto/cobra/db"
+	"github.com/dihanto/cli/cmd"
+	"github.com/dihanto/cli/db"
 )
 
 func main() {

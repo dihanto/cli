@@ -1,4 +1,4 @@
-module github.com/dihanto/cobra
+module github.com/dihanto/cli
 
 go 1.20
 

@@ -7,66 +7,39 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var userCmd = &cobra.Command{
-	Use:   "user",
-	Short: "Manage users",
-	Long:  "A CLI tool to manage users",
-	Run: func(cmd *cobra.Command, args []string) {
-		// Your main user command logic goes here
-	},
-}
-
-var addCmd = &cobra.Command{
-	Use:   "add",
-	Short: "Add a new user",
-	Long:  "Add a new user to the system",
+var createUserCmd = &cobra.Command{
+	Use:   "createuser",
+	Short: "Create a new user",
+	Long:  `Create a new user with a name and email address`,
 	Run: func(cmd *cobra.Command, args []string) {
 		name, _ := cmd.Flags().GetString("name")
 		email, _ := cmd.Flags().GetString("email")
-
-		// Your 'add' user subcommand logic goes here
-		fmt.Printf("Adding user '%s' with email '%s'...\n", name, email)
-	},
-}
-
-var dbCmd = &cobra.Command{
-	Use:   "db",
-	Short: "Manage database",
-	Long:  "A CLI tool to manage database",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		dsn, err := cmd.Flags().GetString("dsn")
-		if err != nil {
-			return err
-		}
-
-		// Connect to the database
-		db, err := db.ConnectDB(dsn)
-		if err != nil {
-			return err
-		}
-		defer db.Close()
-
-		// Your 'db' command logic goes here
-		fmt.Println("Database connection established successfully")
-		return nil
+		createUser(name, email)
 	},
 }
 
 func init() {
+	createUserCmd.Flags().StringP("name", "n", "", "The name of the user")
+	createUserCmd.Flags().StringP("email", "e", "", "The email address of the user")
+	createUserCmd.MarkFlagRequired("name")
+	createUserCmd.MarkFlagRequired("email")
 
-	dbCmd.Flags().StringP("dsn", "", "", "The database connection string")
-	dbCmd.MarkFlagRequired("dsn")
+	rootCmd.AddCommand(createUserCmd)
+}
 
-	RootCmd.AddCommand(dbCmd)
+func createUser(name string, email string) {
+	db := db.GetDB()
 
-	addCmd.Flags().StringP("name", "n", "", "The name of the new user")
-	addCmd.Flags().StringP("email", "e", "", "The email address of the new user")
+	insert, err := db.Prepare("INSERT INTO users(name, email) VALUES(?, ?)")
+	if err != nil {
+		panic(err)
+	}
+	defer insert.Close()
 
-	addCmd.MarkFlagRequired("name")
-	addCmd.MarkFlagRequired("email")
+	_, err = insert.Exec(name, email)
+	if err != nil {
+		panic(err)
+	}
 
-	userCmd.AddCommand(addCmd)
-
-	// Register the user command with Cobra
-	RootCmd.AddCommand(userCmd)
+	fmt.Println("User created successfully with name:", name)
 }

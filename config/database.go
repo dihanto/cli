@@ -13,7 +13,7 @@ var (
 func GetDB() *sql.DB {
 	if db == nil {
 		var err error
-		db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/cobra")
+		db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/case1")
 		if err != nil {
 			panic(err)
 		}

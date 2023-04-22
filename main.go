@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/dihanto/cli/cmd"
-	"github.com/dihanto/cli/db"
+	db "github.com/dihanto/cli/config"
 )
 
 func main() {

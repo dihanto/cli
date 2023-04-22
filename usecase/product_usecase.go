@@ -54,3 +54,11 @@ func (pu *productUsecase) Delete(ctx context.Context, id int) (err error) {
 	}
 	return
 }
+func (pu *productUsecase) Select(ctx context.Context, id int) (err error) {
+	ctx, cancel := context.WithTimeout(ctx, pu.contextTimeout)
+	defer cancel()
+	if err = pu.productRepo.Select(ctx, id); err != nil {
+		return
+	}
+	return
+}

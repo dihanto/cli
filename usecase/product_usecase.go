@@ -5,14 +5,15 @@ import (
 	"time"
 
 	"github.com/dihanto/cli/entity"
+	"github.com/dihanto/cli/repository"
 )
 
 type productUsecase struct {
-	productRepo    entity.ProductRepository
+	productRepo    repository.ProductRepository
 	contextTimeout time.Duration
 }
 
-func NewProductUsecase(pr entity.ProductRepository, timeout time.Duration) entity.ProductUsecase {
+func NewProductUsecase(pr repository.ProductRepository, timeout time.Duration) entity.ProductUsecase {
 	return &productUsecase{
 		productRepo:    pr,
 		contextTimeout: timeout,

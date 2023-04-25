@@ -4,7 +4,6 @@ import (
 	"log"
 
 	db "github.com/dihanto/cli/config"
-	"github.com/dihanto/cli/entity"
 	"github.com/dihanto/cli/repository"
 	"github.com/spf13/cobra"
 )
@@ -41,7 +40,7 @@ var selectCmd = &cobra.Command{
 var name string
 var price float64
 var quantity int
-var mysqlRepo entity.ProductRepository
+var mysqlRepo repository.ProductRepository
 var id int
 
 func init() {

@@ -13,7 +13,7 @@ type mysqlProductRepository struct {
 	Conn *sql.DB
 }
 
-func NewMysqlProductRepostitory(conn *sql.DB) entity.ProductRepository {
+func NewMysqlProductRepostitory(conn *sql.DB) ProductRepository {
 	return &mysqlProductRepository{conn}
 }
 

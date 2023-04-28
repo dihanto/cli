@@ -103,24 +103,15 @@ func (m *mysqlProductRepository) Delete(ctx context.Context, id int) (err error)
 
 	return
 }
-func (m *mysqlProductRepository) Select(ctx context.Context, id int) (err error) {
+func (m *mysqlProductRepository) Select(ctx context.Context, id int) (products []entity.Product, err error) {
 	query := `SELECT * FROM products WHERE id=?`
 	rows, err := m.Conn.QueryContext(ctx, query, id)
 	if err != nil {
 		return
 	}
 	defer rows.Close()
-
-	type Product struct {
-		ID       int
-		Name     string
-		Quantity int
-		Price    float64
-	}
-
-	var products []Product
 	for rows.Next() {
-		var p Product
+		p := entity.Product{}
 		err = rows.Scan(&p.ID, &p.Name, &p.Price, &p.Quantity)
 		if err != nil {
 			return
@@ -133,11 +124,12 @@ func (m *mysqlProductRepository) Select(ctx context.Context, id int) (err error)
 	}
 
 	if len(products) == 0 {
-		return fmt.Errorf("product with ID %d not found", id)
+		return
 	}
 
 	for _, p := range products {
-		fmt.Printf("ID: %d, Name: %s, Price: %f, Quantity: %d\n", p.ID, p.Name, p.Price, p.Quantity)
+		result := fmt.Sprintf("ID: %d, Name: %s, Price: %0.1f, Quantity: %d\n", p.ID, p.Name, p.Price, p.Quantity)
+		fmt.Print(result)
 	}
 
 	return

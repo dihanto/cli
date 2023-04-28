@@ -11,5 +11,5 @@ type ProductRepository interface {
 	Show(ctx context.Context) ([]entity.Product, error)
 	Update(ctx context.Context, product *entity.Product) (err error)
 	Delete(ctx context.Context, id int) (err error)
-	Select(ctx context.Context, id int) (err error)
+	Select(ctx context.Context, id int) (product []entity.Product, err error)
 }

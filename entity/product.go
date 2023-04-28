@@ -14,5 +14,5 @@ type ProductUsecase interface {
 	Show(ctx context.Context) ([]Product, error)
 	Update(ctx context.Context, product *Product) (err error)
 	Delete(ctx context.Context, id int) (err error)
-	Select(ctc context.Context, id int) (err error)
+	Select(ctc context.Context, id int) (product []Product, err error)
 }

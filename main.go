@@ -28,12 +28,8 @@ func main() {
 	productUsecase := usecase.NewProductUsecase(productRepository, 10*time.Second)
 
 	// Create a new instance of the ProductController and add a subcommand to the root command
-	productController := controller.NewProductController(productUsecase, rootCmd)
-	productController.InsertCmd()
-	productController.ShowCmd()
-	productController.UpdateCmd()
-	productController.DeleteCmd()
-	productController.SelectCmd()
+	productController := controller.NewProductController(productUsecase)
+	productController.Route(rootCmd)
 	// Execute the root command
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
